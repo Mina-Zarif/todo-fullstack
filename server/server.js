@@ -30,9 +30,13 @@ function writeTodos(todos) {
 // -------------------------
 
 app.get("/", (req, res) => {
-  res.json({
-    message: "Todo API is running",
-  });
+  try {
+    const todos = readTodos();
+    res.json(todos);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to read todos" });
+  }
 });
 
 // GET all todos
