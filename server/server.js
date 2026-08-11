@@ -17,7 +17,7 @@ const fs = require("fs");
 const path = require("path");
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const DATA_FILE = path.join(__dirname, "todos.json");
 
 // --- Middleware ---
@@ -104,6 +104,6 @@ app.delete("/api/todos/:id", (req, res) => {
   res.status(204).end();
 });
 
-app.listen(PORT, () => {
-  console.log(`✅ Backend server running at http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`✅ Backend server running on port ${PORT}`);
 });
