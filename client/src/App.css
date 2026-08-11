@@ -1,0 +1,265 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&display=swap");
+
+:root {
+  --desk: #20222b;
+  --paper: #f2ecda;
+  --paper-line: #b9c6dd;
+  --margin: #cf5b4d;
+  --ink: #262420;
+  --ink-soft: #6b6558;
+  --check: #5c7f5a;
+  --ring: #3a3d49;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.page {
+  min-height: 100vh;
+  background: var(--desk);
+  background-image: radial-gradient(circle at 20% 10%, #2a2d38 0%, var(--desk) 60%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+  font-family: "Space Mono", monospace;
+}
+
+.pad {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  background: var(--paper);
+  border-radius: 6px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45), 0 2px 0 rgba(255, 255, 255, 0.05) inset;
+  padding: 30px 32px 40px 60px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 35px,
+    var(--paper-line) 36px
+  );
+  background-position: 0 84px;
+}
+
+.pad::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 40px;
+  width: 1px;
+  background: var(--margin);
+  opacity: 0.55;
+}
+
+.pad-rings {
+  position: absolute;
+  left: -14px;
+  top: 24px;
+  bottom: 24px;
+  width: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ring {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--ring);
+  box-shadow: inset 0 0 0 5px var(--desk);
+}
+
+.pad-content {
+  position: relative;
+}
+
+.pad-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.pad-header h1 {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  margin: 0;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.count {
+  font-size: 12px;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.error {
+  font-size: 13px;
+  color: var(--margin);
+  background: rgba(207, 91, 77, 0.1);
+  border: 1px solid rgba(207, 91, 77, 0.3);
+  padding: 8px 10px;
+  border-radius: 4px;
+}
+
+.add-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.add-form input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  border-bottom: 1px dashed var(--ink-soft);
+  font-family: "Space Mono", monospace;
+  font-size: 15px;
+  color: var(--ink);
+  padding: 6px 2px;
+  outline: none;
+}
+
+.add-form input::placeholder {
+  color: var(--ink-soft);
+  opacity: 0.7;
+}
+
+.add-form input:focus {
+  border-bottom: 1px solid var(--check);
+}
+
+.add-form button {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 18px;
+  cursor: pointer;
+  line-height: 1;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.add-form button:hover {
+  background: var(--check);
+  transform: scale(1.06);
+}
+
+.add-form button:focus-visible,
+.checkbox:focus-visible,
+.delete:focus-visible {
+  outline: 2px solid var(--check);
+  outline-offset: 2px;
+}
+
+.todo-list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+}
+
+.todo-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 36px;
+}
+
+.empty {
+  color: var(--ink-soft);
+  font-style: italic;
+  font-size: 14px;
+  padding-top: 8px;
+}
+
+.checkbox {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--ink-soft);
+  border-radius: 3px;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--paper);
+  padding: 0;
+}
+
+.todo-row.done .checkbox {
+  background: var(--check);
+  border-color: var(--check);
+}
+
+.todo-text {
+  flex: 1;
+  font-size: 15px;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.todo-row.done .todo-text {
+  color: var(--ink-soft);
+  text-decoration: line-through;
+  text-decoration-color: var(--ink-soft);
+}
+
+.delete {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 18px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease, color 0.15s ease;
+  padding: 0 4px;
+}
+
+.todo-row:hover .delete {
+  opacity: 1;
+}
+
+.delete:hover {
+  color: var(--margin);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .add-form button {
+    transition: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .pad {
+    padding: 26px 20px 32px 46px;
+  }
+  .pad::before {
+    left: 28px;
+  }
+  .pad-rings {
+    left: -10px;
+    width: 20px;
+  }
+  .ring {
+    width: 20px;
+    height: 20px;
+  }
+}
