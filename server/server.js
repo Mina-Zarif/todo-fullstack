@@ -29,6 +29,12 @@ function writeTodos(todos) {
 // Routes
 // -------------------------
 
+app.get("/", (req, res) => {
+  res.json({
+    message: "Todo API is running",
+  });
+});
+
 // GET all todos
 app.get("/api/todos", (req, res) => {
   try {

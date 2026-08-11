@@ -6,6 +6,8 @@ import "./App.css";
 // programs running on two separate ports. The frontend has to "fetch"
 // data from the backend over HTTP, just like it would from any API.
 const API_URL = import.meta.env.VITE_API_URL;
+console.log("API_URL:", API_URL);
+fetch(`${API_URL}/api/todos`);
 // const API_URL = "http://localhost:3001/api/todos";
 
 export default function App() {
