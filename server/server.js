@@ -6,7 +6,8 @@ const path = require("path");
 const app = express();
 
 // Path to our JSON "database"
-const DATA_FILE = path.join(__dirname, "todos.json");
+// const DATA_FILE = path.join(__dirname, "todos.json");
+let todos = [];
 
 // Middleware
 app.use(cors());
@@ -17,12 +18,14 @@ app.use(express.json());
 // -------------------------
 
 function readTodos() {
-  const raw = fs.readFileSync(DATA_FILE, "utf-8");
-  return JSON.parse(raw);
+  // const raw = fs.readFileSync(DATA_FILE, "utf-8");
+  // return JSON.parse(raw);
+    return todos;
 }
 
 function writeTodos(todos) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(todos, null, 2));
+  // fs.writeFileSync(DATA_FILE, JSON.stringify(todos, null, 2));
+    todos = newTodos;
 }
 
 // -------------------------
