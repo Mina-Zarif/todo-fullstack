@@ -32,9 +32,9 @@ function writeTodos(newTodos) {
 // Routes
 // -------------------------
 
-app.get("/", async (req, res) => {
+app.get("/", (req, res) => {
   try {
-    const todos = await readTodos();
+    const todos = readTodos();
     res.json(todos);
   } catch (error) {
     console.error(error);
@@ -43,9 +43,9 @@ app.get("/", async (req, res) => {
 });
 
 // GET all todos
-app.get("/api/todos", async (req, res) => {
+app.get("/api/todos", (req, res) => {
   try {
-    const todos = await readTodos();
+    const todos = readTodos();
     res.json(todos);
   } catch (error) {
     console.error(error);
@@ -54,7 +54,7 @@ app.get("/api/todos", async (req, res) => {
 });
 
 // POST a new todo
-app.post("/api/todos", async (req, res) => {
+app.post("/api/todos", (req, res) => {
   try {
     const { text } = req.body;
 
@@ -64,7 +64,7 @@ app.post("/api/todos", async (req, res) => {
       });
     }
 
-    const todos = await readTodos();
+    const todos = readTodos();
 
     const newTodo = {
       id: Date.now(),
@@ -73,7 +73,7 @@ app.post("/api/todos", async (req, res) => {
     };
 
     todos.push(newTodo);
-    await writeTodos(todos);
+    writeTodos(todos);
 
     res.status(201).json(newTodo);
   } catch (error) {
@@ -85,10 +85,10 @@ app.post("/api/todos", async (req, res) => {
 });
 
 // PATCH/update a todo
-app.patch("/api/todos/:id", async (req, res) => {
+app.patch("/api/todos/:id", (req, res) => {
   try {
     const id = Number(req.params.id);
-    const todos = await readTodos();
+    const todos = readTodos();
 
     const todo = todos.find((todo) => todo.id === id);
 
@@ -109,7 +109,7 @@ app.patch("/api/todos/:id", async (req, res) => {
       todo.text = req.body.text.trim();
     }
 
-    await writeTodos(todos);
+    writeTodos(todos);
 
     res.json(todo);
   } catch (error) {
@@ -121,10 +121,10 @@ app.patch("/api/todos/:id", async (req, res) => {
 });
 
 // DELETE a todo
-app.delete("/api/todos/:id", async (req, res) => {
+app.delete("/api/todos/:id", (req, res) => {
   try {
     const id = Number(req.params.id);
-    const todos = await readTodos();
+    const todos = readTodos();
 
     const exists = todos.some((todo) => todo.id === id);
 
@@ -138,7 +138,7 @@ app.delete("/api/todos/:id", async (req, res) => {
       (todo) => todo.id !== id
     );
 
-    await writeTodos(updatedTodos);
+    writeTodos(updatedTodos);
 
     res.status(204).end();
   } catch (error) {
