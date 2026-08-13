@@ -1,13 +1,11 @@
 const express = require("express");
 const cors = require("cors");
-const fs = require("fs");
-const path = require("path");
+const { kv } = require("@vercel/kv");
 
 const app = express();
 
-// Path to our JSON "database"
-// const DATA_FILE = path.join(__dirname, "todos.json");
-let todos = [];
+// Key under which the todos array is stored in Vercel KV
+const TODOS_KEY = "todos";
 
 // Middleware
 app.use(cors());
@@ -17,24 +15,22 @@ app.use(express.json());
 // Database helpers
 // -------------------------
 
-function readTodos() {
-  // const raw = fs.readFileSync(DATA_FILE, "utf-8");
-  // return JSON.parse(raw);
-    return todos;
+async function readTodos() {
+  const todos = await kv.get(TODOS_KEY);
+  return todos || [];
 }
 
-function writeTodos(newTodos) {
-  // fs.writeFileSync(DATA_FILE, JSON.stringify(todos, null, 2));
-    todos = newTodos;
+async function writeTodos(newTodos) {
+  await kv.set(TODOS_KEY, newTodos);
 }
 
 // -------------------------
 // Routes
 // -------------------------
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
   try {
-    const todos = readTodos();
+    const todos = await readTodos();
     res.json(todos);
   } catch (error) {
     console.error(error);
@@ -43,9 +39,9 @@ app.get("/", (req, res) => {
 });
 
 // GET all todos
-app.get("/api/todos", (req, res) => {
+app.get("/api/todos", async (req, res) => {
   try {
-    const todos = readTodos();
+    const todos = await readTodos();
     res.json(todos);
   } catch (error) {
     console.error(error);
@@ -54,7 +50,7 @@ app.get("/api/todos", (req, res) => {
 });
 
 // POST a new todo
-app.post("/api/todos", (req, res) => {
+app.post("/api/todos", async (req, res) => {
   try {
     const { text } = req.body;
 
@@ -64,7 +60,7 @@ app.post("/api/todos", (req, res) => {
       });
     }
 
-    const todos = readTodos();
+    const todos = await readTodos();
 
     const newTodo = {
       id: Date.now(),
@@ -73,7 +69,7 @@ app.post("/api/todos", (req, res) => {
     };
 
     todos.push(newTodo);
-    writeTodos(todos);
+    await writeTodos(todos);
 
     res.status(201).json(newTodo);
   } catch (error) {
@@ -85,10 +81,10 @@ app.post("/api/todos", (req, res) => {
 });
 
 // PATCH/update a todo
-app.patch("/api/todos/:id", (req, res) => {
+app.patch("/api/todos/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
-    const todos = readTodos();
+    const todos = await readTodos();
 
     const todo = todos.find((todo) => todo.id === id);
 
@@ -109,7 +105,7 @@ app.patch("/api/todos/:id", (req, res) => {
       todo.text = req.body.text.trim();
     }
 
-    writeTodos(todos);
+    await writeTodos(todos);
 
     res.json(todo);
   } catch (error) {
@@ -121,10 +117,10 @@ app.patch("/api/todos/:id", (req, res) => {
 });
 
 // DELETE a todo
-app.delete("/api/todos/:id", (req, res) => {
+app.delete("/api/todos/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
-    const todos = readTodos();
+    const todos = await readTodos();
 
     const exists = todos.some((todo) => todo.id === id);
 
@@ -138,7 +134,7 @@ app.delete("/api/todos/:id", (req, res) => {
       (todo) => todo.id !== id
     );
 
-    writeTodos(updatedTodos);
+    await writeTodos(updatedTodos);
 
     res.status(204).end();
   } catch (error) {
