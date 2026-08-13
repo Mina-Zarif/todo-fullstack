@@ -1,11 +1,13 @@
 const express = require("express");
 const cors = require("cors");
-const { kv } = require("@vercel/kv");
+const fs = require("fs");
+const path = require("path");
 
 const app = express();
 
-// Key under which the todos array is stored in Vercel KV
-const TODOS_KEY = "todos";
+// Path to our JSON "database"
+// const DATA_FILE = path.join(__dirname, "todos.json");
+let todos = [];
 
 // Middleware
 app.use(cors());
@@ -15,13 +17,15 @@ app.use(express.json());
 // Database helpers
 // -------------------------
 
-async function readTodos() {
-  const todos = await kv.get(TODOS_KEY);
-  return todos || [];
+function readTodos() {
+  // const raw = fs.readFileSync(DATA_FILE, "utf-8");
+  // return JSON.parse(raw);
+    return todos;
 }
 
-async function writeTodos(newTodos) {
-  await kv.set(TODOS_KEY, newTodos);
+function writeTodos(newTodos) {
+  // fs.writeFileSync(DATA_FILE, JSON.stringify(todos, null, 2));
+    todos = newTodos;
 }
 
 // -------------------------
