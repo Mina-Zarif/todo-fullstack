@@ -23,7 +23,7 @@ function readTodos() {
     return todos;
 }
 
-function writeTodos(todos) {
+function writeTodos(newTodos) {
   // fs.writeFileSync(DATA_FILE, JSON.stringify(todos, null, 2));
     todos = newTodos;
 }
